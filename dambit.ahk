@@ -1,6 +1,6 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
-;#Include ExcelToArray.ahk
+#Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master ExcelToArray.ahk
 
 ^1::
 	if (keepWinRunning) {
@@ -33,7 +33,6 @@
 	WinWait, New Product Criteria
 	ControlClick, productsbutton, New Product Criteria
 	WinWait, Selected Products for Labels
-dfgdfg asd
 
 
 	keepWinRunning := false
