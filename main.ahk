@@ -1,6 +1,6 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
-#Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master ExcelToArray.ahk
+#Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
 
 ^1::
 	if (keepWinRunning) {
