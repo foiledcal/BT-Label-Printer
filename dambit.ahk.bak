@@ -1,0 +1,37 @@
+/*
+
+if (keepWinRunning) {
+	keepWinRunning := false
+	return
+}
+keepWinRunning := true
+
+push through opening prompts
+	check if at end, progress checks backwards through menus
+	delay and winait used
+prompt user file
+	parse filename with "." to take final file extension
+if filetype .txt
+	convert to array through loop file read
+	count number of lines
+if filetype excel, use exceltoarray
+	look for column headers like sku, upc, quantity, etc
+
+;convert loop file read to loop through arrays
+
+loop to progress through sku entering windows
+	switch case for stepping through windows
+	if !keepwinrunning {
+		showBistrack()
+		return
+	}
+		
+
+functions
+
+showBistrack()
+hideBistrack()
+error()
+	error message block
+
+*/
