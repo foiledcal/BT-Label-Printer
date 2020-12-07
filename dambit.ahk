@@ -10,10 +10,10 @@
 	keepWinRunning := true
 
 	FileSelectFile, fileIn, 3
-	if (fileIn := "") {
+	if (fileIn = "") {
 		keepWinRunning := False
 		return
-	} ;dfg
+	}
 
 	;Window: Print Labels Wizard
 		nextbutton := "ThunderRT6CommandButton2"
