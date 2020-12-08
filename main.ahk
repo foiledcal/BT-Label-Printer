@@ -25,13 +25,13 @@
 		textfield := "ThunderRT6TextBox1"
 		addbutton := "ThunderRT6CommandButton1"
 
-	ControlClick, nextbutton, Print Labels Wizard
+	ControlClick, nextbutton, Print Labels Wizard,,,, NA
 	sleep, 300
-	ControlClick, radiobutton, Print Labels Wizard
+	ControlClick, radiobutton, Print Labels Wizard,,,, NA
 	sleep, 300
-	ControlClick, addbutton, Print Labels Wizard
+	ControlClick, addbutton, Print Labels Wizard,,,, NA
 	WinWait, New Product Criteria
-	ControlClick, productsbutton, New Product Criteria
+	ControlClick, productsbutton, New Product Criteria,,,, NA
 	WinWait, Selected Products for Labels
 
 
