@@ -1,6 +1,9 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
 #Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
+SendMode Input
+SetWorkingDir, %A_ScriptDir%
+
 
 ^1::
 	if (keepWinRunning) {
@@ -35,6 +38,23 @@
 	sleep, 500
 	ControlClick, %productsbutton%, New Product Criteria,,,, NA
 	WinWait, Selected Products for Labels
+
+	if (WinExist("Selected Products for Labels")) {
+
+	} else if (WinExist("New Product Criteria")) {
+		ControlClick, %productsbutton%, New Product Criteria,,,, NA
+	} else if (WinExist("Print Labels Wizard")) {
+		ControlGet, addVisible, Visible,, ThunderRT6CommandButton6, Print Labels Wizard
+		if (addVisible) {
+			ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
+			ControlClick, %addbutton%, Print Labels Wizard,,,, NA
+			WinWait, New Product Criteria
+			sleep, 500
+			ControlClick, %productsbutton%, New Product Criteria,,,, NA
+		} else {
+			
+		}
+	}
 
 
 	keepWinRunning := false
