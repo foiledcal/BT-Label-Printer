@@ -6,12 +6,15 @@ SetWorkingDir, %A_ScriptDir%
 
 
 ^1::
+	;if other thread already running, this tells that one to stop
 	if (keepWinRunning) {
 		keepWinRunning := false
 		return
 	}
 	keepWinRunning := true
+	;keep this block at the top
 	
+	;prompt user file
 	FileSelectFile, fileIn, 3
 	if (fileIn = "") {
 		keepWinRunning := False
@@ -28,27 +31,14 @@ SetWorkingDir, %A_ScriptDir%
 		textfield := "ThunderRT6TextBox1"
 		skuaddbutton := "ThunderRT6CommandButton1"
 
-	/*
-	sleep, 500
-	ControlClick, %nextbutton%, Print Labels Wizard,,,, NA
-	sleep, 500
-	ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
-	sleep, 500
-	ControlClick, %addbutton%, Print Labels Wizard,,,, NA
-	WinWait, New Product Criteria
-	sleep, 500
-	ControlClick, %productsbutton%, New Product Criteria,,,, NA
-	WinWait, Selected Products for Labels
-	*/
-
+	;Push through starting windows
 	if (!WinExist("Selected Products for Labels")) {
 		if (WinExist("New Product Criteria")) {
 			ControlClick, %productsbutton%, New Product Criteria,,,, NA
 			sleep, 500
 		} else if (WinExist("Print Labels Wizard")) {
-			ControlGet, addVisible, Visible,, %addbutton%, Print Labels Wizard
-			;use     ControlGet, addEnabled, Enabled,, ThunderRT6CommandButton2, Print Labels Wizard
-			if (addVisible) {
+		    ControlGet, radioVisible, Visible,, ThunderRT6OptionButton6, Print Labels Wizard	
+			if (radioVisible) {
 				ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
 				sleep, 500
 				ControlClick, %addbutton%, Print Labels Wizard,,,, NA

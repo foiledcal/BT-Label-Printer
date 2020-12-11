@@ -11,3 +11,8 @@ SetWorkingDir, %A_ScriptDir%
     ControlGet, addEnabled, Enabled,, ThunderRT6CommandButton2, Print Labels Wizard
     MsgBox, Enabled: %addEnabled%
     return 
+
+^8::
+    ControlGet, radioVisible, Visible,, ThunderRT6OptionButton6, Print Labels Wizard
+    MsgBox, Radio Visible: %radioVisible%
+    return
