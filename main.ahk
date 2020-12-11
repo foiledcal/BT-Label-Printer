@@ -8,7 +8,7 @@
 		return
 	}
 	keepWinRunning := true
-
+	
 	FileSelectFile, fileIn, 3
 	if (fileIn = "") {
 		keepWinRunning := False
