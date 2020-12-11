@@ -28,6 +28,7 @@ SetWorkingDir, %A_ScriptDir%
 		textfield := "ThunderRT6TextBox1"
 		skuaddbutton := "ThunderRT6CommandButton1"
 
+	/*
 	sleep, 500
 	ControlClick, %nextbutton%, Print Labels Wizard,,,, NA
 	sleep, 500
@@ -38,21 +39,34 @@ SetWorkingDir, %A_ScriptDir%
 	sleep, 500
 	ControlClick, %productsbutton%, New Product Criteria,,,, NA
 	WinWait, Selected Products for Labels
+	*/
 
-	if (WinExist("Selected Products for Labels")) {
-
-	} else if (WinExist("New Product Criteria")) {
-		ControlClick, %productsbutton%, New Product Criteria,,,, NA
-	} else if (WinExist("Print Labels Wizard")) {
-		ControlGet, addVisible, Visible,, ThunderRT6CommandButton6, Print Labels Wizard
-		if (addVisible) {
-			ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
-			ControlClick, %addbutton%, Print Labels Wizard,,,, NA
-			WinWait, New Product Criteria
-			sleep, 500
+	if (!WinExist("Selected Products for Labels")) {
+		if (WinExist("New Product Criteria")) {
 			ControlClick, %productsbutton%, New Product Criteria,,,, NA
-		} else {
-			
+			sleep, 500
+		} else if (WinExist("Print Labels Wizard")) {
+			ControlGet, addVisible, Visible,, %addbutton%, Print Labels Wizard
+			;use     ControlGet, addEnabled, Enabled,, ThunderRT6CommandButton2, Print Labels Wizard
+			if (addVisible) {
+				ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
+				sleep, 500
+				ControlClick, %addbutton%, Print Labels Wizard,,,, NA
+				WinWait, New Product Criteria
+				sleep, 500
+				ControlClick, %productsbutton%, New Product Criteria,,,, NA
+				sleep, 500
+			} else {
+				ControlClick, %nextbutton%, Print Labels Wizard,,,, NA
+				sleep, 500
+				ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
+				sleep, 500
+				ControlClick, %addbutton%, Print Labels Wizard,,,, NA
+				WinWait, New Product Criteria
+				sleep, 500
+				ControlClick, %productsbutton%, New Product Criteria,,,, NA
+				sleep, 500
+			}
 		}
 	}
 
