@@ -23,20 +23,25 @@
 		productsbutton := "SSCommandWndClass1"
 	;window: Selected Products for Labels
 		textfield := "ThunderRT6TextBox1"
-		addbutton := "ThunderRT6CommandButton1"
+		skuaddbutton := "ThunderRT6CommandButton1"
 
-	ControlClick, nextbutton, Print Labels Wizard,,,, NA
-	sleep, 300
-	ControlClick, radiobutton, Print Labels Wizard,,,, NA
-	sleep, 300
-	ControlClick, addbutton, Print Labels Wizard,,,, NA
+	sleep, 500
+	ControlClick, %nextbutton%, Print Labels Wizard,,,, NA
+	sleep, 500
+	ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
+	sleep, 500
+	ControlClick, %addbutton%, Print Labels Wizard,,,, NA
 	WinWait, New Product Criteria
-	ControlClick, productsbutton, New Product Criteria,,,, NA
+	sleep, 500
+	ControlClick, %productsbutton%, New Product Criteria,,,, NA
 	WinWait, Selected Products for Labels
 
 
 	keepWinRunning := false
 	Return
+
+
+
 /*
 
 
