@@ -66,6 +66,7 @@ SetWorkingDir, %A_ScriptDir%
 	{
 		MsgBox, index: %A_Index%, aloopfield: %A_LoopField%
 		if (%A_Index% > 1) {
+			MsgBox, Index: %A_Index%
 			fileExt := %A_LoopField%
 		}
 	}
