@@ -60,6 +60,26 @@ SetWorkingDir, %A_ScriptDir%
 		}
 	}
 
+	;parse file name
+	fileExt := ""
+	Loop, Parse, fileIn, .
+	{
+		MsgBox, index: %A_Index%, aloopfield: %A_LoopField%
+		if (%A_Index% > 1) {
+			fileExt := %A_LoopField%
+		}
+	}
+	MsgBox, fileExt: %fileExt%
+	if (fileExt = "txt") {
+		MsgBox, txt
+	} else if (fileExt = "xlsx") {
+		MsgBox, xlsx
+	} else if (fileExt = "csv") {
+		MsgBox, csv
+	} else {
+		MsgBox, invalid file type
+	}
+
 
 	keepWinRunning := false
 	Return
