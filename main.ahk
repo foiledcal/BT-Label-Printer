@@ -6,7 +6,7 @@ SetWorkingDir, %A_ScriptDir%
 
 
 ^1::
-	;if other thread already running, this tells that one to stop
+	;if other thread already running, this tells it to stop
 	if (keepWinRunning) {
 		keepWinRunning := false
 		return
@@ -60,23 +60,12 @@ SetWorkingDir, %A_ScriptDir%
 		}
 	}
 
-	;parse file name
-	fileExt := "temp"
-	MsgBox, fileExt: %fileExt%
-	Loop, Parse, fileIn, ., \:%A_Space%
+	;extract file extension
+	Loop, %fileIn%
 	{
-		MsgBox, index: %A_Index%, aloopfield: %A_LoopField%
-		fileExt := %A_LoopField%
-		MsgBox, fileExt: %fileExt%
-		;temp := %A_LoopField%
-		/*
-		if (%A_Index% > 0) {
-			MsgBox, Index: %A_Index%
-			fileExt := %A_LoopField%
-		}
-		*/
+		StringGetPos, PosA, A_LoopFileName, ., R
+		StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
 	}
-	MsgBox, fileExt: %fileExt%
 	if (fileExt = "txt") {
 		MsgBox, txt
 	} else if (fileExt = "xlsx") {
@@ -86,6 +75,11 @@ SetWorkingDir, %A_ScriptDir%
 	} else {
 		MsgBox, invalid file type
 	}
+
+
+
+
+
 
 
 	keepWinRunning := false
