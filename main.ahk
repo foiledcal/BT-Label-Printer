@@ -61,14 +61,20 @@ SetWorkingDir, %A_ScriptDir%
 	}
 
 	;parse file name
-	fileExt := ""
-	Loop, Parse, fileIn, .
+	fileExt := "temp"
+	MsgBox, fileExt: %fileExt%
+	Loop, Parse, fileIn, ., \:%A_Space%
 	{
 		MsgBox, index: %A_Index%, aloopfield: %A_LoopField%
-		if (%A_Index% > 1) {
+		fileExt := %A_LoopField%
+		MsgBox, fileExt: %fileExt%
+		;temp := %A_LoopField%
+		/*
+		if (%A_Index% > 0) {
 			MsgBox, Index: %A_Index%
 			fileExt := %A_LoopField%
 		}
+		*/
 	}
 	MsgBox, fileExt: %fileExt%
 	if (fileExt = "txt") {
