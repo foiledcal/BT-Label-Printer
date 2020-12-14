@@ -61,13 +61,23 @@ SetWorkingDir, %A_ScriptDir%
 	}
 
 	;extract file extension
+	linecount := 0
+	skuArray := []
 	Loop, %fileIn%
 	{
 		StringGetPos, PosA, A_LoopFileName, ., R
 		StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
 	}
 	if (fileExt = "txt") {
-		MsgBox, txt
+		Loop, Read, %fileIn%
+		{
+			skuArray.Push(A_LoopReadLine)
+			lineCount := linecount + 1
+		}
+		Loop, %linecount%
+		{
+			MsgBox % skuArray[A_Index]
+		}
 	} else if (fileExt = "xlsx") {
 		MsgBox, xlsx
 	} else if (fileExt = "csv") {
@@ -75,9 +85,6 @@ SetWorkingDir, %A_ScriptDir%
 	} else {
 		MsgBox, invalid file type
 	}
-
-
-
 
 
 
