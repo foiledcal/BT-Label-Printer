@@ -1,6 +1,7 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
 #Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
+#Include functions.ahk
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
@@ -68,17 +69,20 @@ SetWorkingDir, %A_ScriptDir%
 		StringGetPos, PosA, A_LoopFileName, ., R
 		StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
 	}
+
+	;Convert files to arrays
 	if (fileExt = "txt") {
 		Loop, Read, %inFile%
 		{
 			skuArray.Push(A_LoopReadLine)
 			lineCount := linecount + 1
 		}
+		;MsgBox % "LineCount:" lineCount ", MaxIndex: " skuArray.MaxIndex()
 	} else if (fileExt = "xlsx") {
 		MsgBox, xlsx
 		ImportData:
 			skuArray := ExcelToArray(inFile)
-		MsgBox % skuArray[1,1]
+		;MsgBox % skuArray[1,1]
 	} else if (fileExt = "csv") {
 		MsgBox, csv
 	} else {
@@ -86,6 +90,20 @@ SetWorkingDir, %A_ScriptDir%
 	}
 
 
+	;main loop
+	Loop, skuArray.MaxIndex()
+	{
+		if (!WinExist("BisTrack - New Pullman Store"))
+			error(1)
+		if (!WinExist("Print Labels Wizard"))
+			error(2)
+		if (!WinExist("New Product Criteria"))
+			error(3)
+		if (!WinExist("Selected Products for Labels"))
+			error(4)
+		
+		
+	}
 
 
 	keepWinRunning := false
@@ -93,8 +111,14 @@ SetWorkingDir, %A_ScriptDir%
 
 
 
-/*
+;-----Functions-----;
 
+
+
+
+
+
+/*
 
 push through opening prompts
 	check if at end, progress checks backwards through menus
@@ -129,6 +153,7 @@ error()
 
 
 plans
+limit types of files selectable
 convert loop file read to loop through arrays
 gui
 	progress bar
