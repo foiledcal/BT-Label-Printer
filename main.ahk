@@ -15,8 +15,8 @@ SetWorkingDir, %A_ScriptDir%
 	;keep this block at the top
 	
 	;prompt user file
-	FileSelectFile, fileIn, 3
-	if (fileIn = "") {
+	FileSelectFile, inFile, 3
+	if (inFile = "") {
 		keepWinRunning := False
 		return
 	}
@@ -63,23 +63,22 @@ SetWorkingDir, %A_ScriptDir%
 	;extract file extension
 	linecount := 0
 	skuArray := []
-	Loop, %fileIn%
+	Loop, %inFile%
 	{
 		StringGetPos, PosA, A_LoopFileName, ., R
 		StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
 	}
 	if (fileExt = "txt") {
-		Loop, Read, %fileIn%
+		Loop, Read, %inFile%
 		{
 			skuArray.Push(A_LoopReadLine)
 			lineCount := linecount + 1
 		}
-		Loop, %linecount%
-		{
-			MsgBox % skuArray[A_Index]
-		}
 	} else if (fileExt = "xlsx") {
 		MsgBox, xlsx
+		ImportData:
+			skuArray := ExcelToArray(inFile)
+		MsgBox % skuArray[1,1]
 	} else if (fileExt = "csv") {
 		MsgBox, csv
 	} else {
