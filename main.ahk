@@ -14,6 +14,16 @@ SetWorkingDir, %A_ScriptDir%
 	}
 	keepWinRunning := true
 	;keep this block at the top
+
+	;timings and declarations
+	pasteAdd := 2000
+	addF := 2000
+	Fpaste := 2000
+	skuArray := []
+	step := 1
+	
+	if (!WinExist("BisTrack - New Pullman Store"))
+		keepWinRunning := error(5)
 	
 	;prompt user file
 	FileSelectFile, inFile, 3
@@ -61,13 +71,17 @@ SetWorkingDir, %A_ScriptDir%
 		}
 	}
 
+	;hideBistrack()
+
 	;extract file extension
-	linecount := 0
-	skuArray := []
-	Loop, %inFile%
-	{
-		StringGetPos, PosA, A_LoopFileName, ., R
-		StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
+	if (FileExist(inFile)) {
+		Loop, %inFile%
+		{
+			StringGetPos, PosA, A_LoopFileName, ., R
+			StringRight, fileExt, A_LoopFileName, % StrLen(A_LoopFileName)-PosA-1
+		}
+	} else {
+		keepWinRunning := keepWinRunning := error(6)
 	}
 
 	;Convert files to arrays
@@ -75,16 +89,16 @@ SetWorkingDir, %A_ScriptDir%
 		Loop, Read, %inFile%
 		{
 			skuArray.Push(A_LoopReadLine)
-			lineCount := linecount + 1
 		}
-		;MsgBox % "LineCount:" lineCount ", MaxIndex: " skuArray.MaxIndex()
 	} else if (fileExt = "xlsx") {
 		MsgBox, xlsx
 		ImportData:
 			skuArray := ExcelToArray(inFile)
 		;MsgBox % skuArray[1,1]
+		;send to function to extract sku column
 	} else if (fileExt = "csv") {
 		MsgBox, csv
+		;make array out of, send to function to extract sku column
 	} else {
 		MsgBox, invalid file type
 	}
@@ -93,26 +107,57 @@ SetWorkingDir, %A_ScriptDir%
 	;main loop
 	Loop, skuArray.MaxIndex()
 	{
+		if (!keepWinRunning) {
+			return
+		}
+
 		if (!WinExist("BisTrack - New Pullman Store"))
-			error(1)
+			keepWinRunning := error(1)
 		if (!WinExist("Print Labels Wizard"))
-			error(2)
+			keepWinRunning := error(2)
 		if (!WinExist("New Product Criteria"))
-			error(3)
+			keepWinRunning := error(3)
 		if (!WinExist("Selected Products for Labels"))
-			error(4)
+			keepWinRunning := error(4)
 		
-		
+		step := 1
+		pasteStart := 0
+		addStart := 0
+		Fstart := 0
+		Switch step {
+			case 1:
+				if (!pasteStart) {
+					pasteStart := A_TickCount
+					ControlSetText, ThunderRT6TextBox1, %A_LoopField%, "Selected Products for Labels"
+				}
+				if (A_TickCount - pasteStart >= pasteAdd) {
+					step := 2
+					pasteStart := 0
+				}
+			case 2:
+				if (!addStart) {
+					addStart := A_TickCount
+					ControlClick, ThunderRT6CommandButton1, "Selected Products for Labels"
+				}
+				if (A_TickCount - addStart >= addF) {
+					step := 3
+					addStart := 0
+				}
+			case 3:
+				if (!Fstart && WinExist("Find Products")) {
+					Fstart := A_TickCount
+					ControlSend, SSCommandWndClass1, "Selected Products for Labels"
+				}
+				if (A_TickCount - Fstart >= Fpaste) {
+					step := 1
+					Fstart := 0
+				}
+		}
 	}
 
 
 	keepWinRunning := false
 	Return
-
-
-
-;-----Functions-----;
-
 
 
 
@@ -145,11 +190,6 @@ loop to progress through sku entering windows
 showBistrack()
 
 functions
-
-showBistrack()
-hideBistrack()
-error()
-	error message block
 
 
 plans
