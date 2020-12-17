@@ -103,10 +103,11 @@ SetWorkingDir, %A_ScriptDir%
 		MsgBox, invalid file type
 	}
 
-
 	;main loop
-	Loop, skuArray.MaxIndex()
+	temp := skuArray.MaxIndex()
+	Loop, %temp%
 	{
+		msgbox, 2
 		if (!keepWinRunning) {
 			return
 		}
@@ -126,6 +127,7 @@ SetWorkingDir, %A_ScriptDir%
 		Fstart := 0
 		Switch step {
 			case 1:
+			msgbox, 3
 				if (!pasteStart) {
 					pasteStart := A_TickCount
 					ControlSetText, ThunderRT6TextBox1, %A_LoopField%, "Selected Products for Labels"
@@ -135,6 +137,7 @@ SetWorkingDir, %A_ScriptDir%
 					pasteStart := 0
 				}
 			case 2:
+			msgbox, 4
 				if (!addStart) {
 					addStart := A_TickCount
 					ControlClick, ThunderRT6CommandButton1, "Selected Products for Labels"
@@ -144,9 +147,10 @@ SetWorkingDir, %A_ScriptDir%
 					addStart := 0
 				}
 			case 3:
+			msgbox, 5
 				if (!Fstart && WinExist("Find Products")) {
 					Fstart := A_TickCount
-					ControlSend, SSCommandWndClass1, "Selected Products for Labels"
+					ControlSend, SSCommandWndClass1, "Find Products"
 				}
 				if (A_TickCount - Fstart >= Fpaste) {
 					step := 1
