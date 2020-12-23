@@ -111,7 +111,7 @@ SetWorkingDir, %A_ScriptDir%
 
 	Loop, %temp%
 	{
-		msgbox, 2
+		;msgbox, 2
 		if (!keepWinRunning) {
 			return
 		}
@@ -124,40 +124,43 @@ SetWorkingDir, %A_ScriptDir%
 			keepWinRunning := error(3)
 		if (!WinExist("Selected Products for Labels"))
 			keepWinRunning := error(4)
-		
-
+	
 		Switch step {
 			case 1:
-				msgbox, 3
+				;msgbox, 3
 				if (pasteStart = 0) {
-					msgbox, 3a
+					;msgbox, 3a
 					pasteStart := A_TickCount
-					msgbox, 3b, A_TickCount = %pasteStart%
-					ControlSetText, ThunderRT6TextBox1, A_LoopField, Selected Products for Labels
-					msgbox, 3c
+					;msgbox, 3b, A_TickCount = %pasteStart%
+					temp2 := skuArray[A_Index]
+					ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
+					;msgbox, 3c
 				}
 				if (A_TickCount - pasteStart >= pasteAdd) {
-					msgbox, 3d
+					;msgbox, 3d
 					step := 2
-					msgbox, 3e
+					;msgbox, 3e
 					pasteStart := 0
-					msgbox, 3f
+					;msgbox, 3f
 				}
 			case 2:
-				msgbox, 4
+				;msgbox, 4
 				if (addStart = 0) {
+					;msgbox, 4a
 					addStart := A_TickCount
-					ControlClick, ThunderRT6CommandButton1, "Selected Products for Labels"
+					ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
+					;msgbox, 4b
 				}
 				if (A_TickCount - addStart >= addF) {
 					step := 3
+					;msgbox, 4c
 					addStart := 0
 				}
 			case 3:
-				msgbox, 5
+				;msgbox, 5
 				if (Fstart = 0 && WinExist("Find Products")) {
 					Fstart := A_TickCount
-					ControlSend, SSCommandWndClass1, "Find Products"
+					ControlClick, SSCommandWndClass1, Find Products,,,, NA
 				}
 				if (A_TickCount - Fstart >= Fpaste) {
 					step := 1
