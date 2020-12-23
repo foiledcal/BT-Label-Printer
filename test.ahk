@@ -30,3 +30,7 @@ SetWorkingDir, %A_ScriptDir%
     }
     else
     MsgBox 64, %A_ScriptName% - Rad %A_LineNumber%, The file is missing! ,3
+    Return
+
+^6::
+    ControlSetText, ThunderRT6TextBox1, test, Selected Products for Labels

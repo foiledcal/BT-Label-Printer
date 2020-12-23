@@ -21,6 +21,9 @@ SetWorkingDir, %A_ScriptDir%
 	Fpaste := 2000
 	skuArray := []
 	step := 1
+	pasteStart := 0
+	addStart := 0
+	Fstart := 0
 	
 	if (!WinExist("BisTrack - New Pullman Store"))
 		keepWinRunning := error(5)
@@ -105,6 +108,7 @@ SetWorkingDir, %A_ScriptDir%
 
 	;main loop
 	temp := skuArray.MaxIndex()
+
 	Loop, %temp%
 	{
 		msgbox, 2
@@ -121,24 +125,27 @@ SetWorkingDir, %A_ScriptDir%
 		if (!WinExist("Selected Products for Labels"))
 			keepWinRunning := error(4)
 		
-		step := 1
-		pasteStart := 0
-		addStart := 0
-		Fstart := 0
+
 		Switch step {
 			case 1:
-			msgbox, 3
-				if (!pasteStart) {
+				msgbox, 3
+				if (pasteStart = 0) {
+					msgbox, 3a
 					pasteStart := A_TickCount
-					ControlSetText, ThunderRT6TextBox1, %A_LoopField%, "Selected Products for Labels"
+					msgbox, 3b, A_TickCount = %pasteStart%
+					ControlSetText, ThunderRT6TextBox1, A_LoopField, Selected Products for Labels
+					msgbox, 3c
 				}
 				if (A_TickCount - pasteStart >= pasteAdd) {
+					msgbox, 3d
 					step := 2
+					msgbox, 3e
 					pasteStart := 0
+					msgbox, 3f
 				}
 			case 2:
-			msgbox, 4
-				if (!addStart) {
+				msgbox, 4
+				if (addStart = 0) {
 					addStart := A_TickCount
 					ControlClick, ThunderRT6CommandButton1, "Selected Products for Labels"
 				}
@@ -147,8 +154,8 @@ SetWorkingDir, %A_ScriptDir%
 					addStart := 0
 				}
 			case 3:
-			msgbox, 5
-				if (!Fstart && WinExist("Find Products")) {
+				msgbox, 5
+				if (Fstart = 0 && WinExist("Find Products")) {
 					Fstart := A_TickCount
 					ControlSend, SSCommandWndClass1, "Find Products"
 				}
