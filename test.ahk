@@ -34,3 +34,8 @@ SetWorkingDir, %A_ScriptDir%
 
 ^6::
     ControlSetText, ThunderRT6TextBox1, test, Selected Products for Labels
+    return
+
+^5::
+    ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
+    return

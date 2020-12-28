@@ -113,6 +113,7 @@ SetWorkingDir, %A_ScriptDir%
 	{
 		;msgbox, 2
 		if (!keepWinRunning) {
+			msgbox, Loop stopped
 			return
 		}
 
@@ -144,12 +145,12 @@ SetWorkingDir, %A_ScriptDir%
 					;msgbox, 3f
 				}
 			case 2:
-				;msgbox, 4
+				msgbox, 4
 				if (addStart = 0) {
-					;msgbox, 4a
+					msgbox, 4a
 					addStart := A_TickCount
 					ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
-					;msgbox, 4b
+					msgbox, 4b
 				}
 				if (A_TickCount - addStart >= addF) {
 					step := 3
@@ -169,6 +170,7 @@ SetWorkingDir, %A_ScriptDir%
 		}
 	}
 
+	msgbox, Done
 
 	keepWinRunning := false
 	Return
@@ -205,6 +207,7 @@ showBistrack()
 
 functions
 
+in return file of bad skus, instead duplicate user's file with bad skus marked
 
 plans
 limit types of files selectable
