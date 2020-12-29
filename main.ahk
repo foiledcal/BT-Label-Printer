@@ -126,47 +126,49 @@ SetWorkingDir, %A_ScriptDir%
 		if (!WinExist("Selected Products for Labels"))
 			keepWinRunning := error(4)
 	
-		Switch step {
-			case 1:
-				;msgbox, 3
-				if (pasteStart = 0) {
-					;msgbox, 3a
-					pasteStart := A_TickCount
-					;msgbox, 3b, A_TickCount = %pasteStart%
-					temp2 := skuArray[A_Index]
-					ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
-					;msgbox, 3c
-				}
-				if (A_TickCount - pasteStart >= pasteAdd) {
-					;msgbox, 3d
-					step := 2
-					;msgbox, 3e
-					pasteStart := 0
-					;msgbox, 3f
-				}
-			case 2:
-				msgbox, 4
-				if (addStart = 0) {
-					msgbox, 4a
-					addStart := A_TickCount
-					ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
-					msgbox, 4b
-				}
-				if (A_TickCount - addStart >= addF) {
-					step := 3
-					;msgbox, 4c
-					addStart := 0
-				}
-			case 3:
-				;msgbox, 5
-				if (Fstart = 0 && WinExist("Find Products")) {
-					Fstart := A_TickCount
-					ControlClick, SSCommandWndClass1, Find Products,,,, NA
-				}
-				if (A_TickCount - Fstart >= Fpaste) {
-					step := 1
-					Fstart := 0
-				}
+		while (step < 4) {
+			Switch step {
+				case 1:
+					;msgbox, 3
+					if (pasteStart = 0) {
+						;msgbox, 3a
+						pasteStart := A_TickCount
+						;msgbox, 3b, A_TickCount = %pasteStart%
+						temp2 := skuArray[A_Index]
+						ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
+						;msgbox, 3c
+					}
+					if (A_TickCount - pasteStart >= pasteAdd) {
+						;msgbox, 3d
+						step := 2
+						;msgbox, 3e
+						pasteStart := 0
+						;msgbox, 3f
+					}
+				case 2:
+					;msgbox, 4
+					if (addStart = 0) {
+						;msgbox, 4a
+						addStart := A_TickCount
+						ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
+						;msgbox, 4b
+					}
+					if (A_TickCount - addStart >= addF) {
+						step := 3
+						;msgbox, 4c
+						addStart := 0
+					}
+				case 3:
+					;msgbox, 5
+					if (Fstart = 0 && WinExist("Find Products")) {
+						Fstart := A_TickCount
+						ControlClick, SSCommandWndClass1, Find Products,,,, NA
+					}
+					if (A_TickCount - Fstart >= Fpaste) {
+						step := 4
+						Fstart := 0
+					}
+			}
 		}
 	}
 
@@ -208,6 +210,7 @@ showBistrack()
 functions
 
 in return file of bad skus, instead duplicate user's file with bad skus marked
+option to reverse array order
 
 plans
 limit types of files selectable
