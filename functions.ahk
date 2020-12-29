@@ -26,9 +26,3 @@ hideBistrack() {
     Winhide, "New Product Criteria"
     WinHide, "Selected Products for Labels"
 }
-
-stop() {
-    showBistrack()
-    return false
-    exit
-}

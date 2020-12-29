@@ -2,6 +2,7 @@
 #MaxThreadsPerHotkey 2
 #Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
+#include settings.config
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
@@ -16,15 +17,16 @@ SetWorkingDir, %A_ScriptDir%
 	;keep this block at the top
 
 	;timings and declarations
-	pasteAdd := 2000
-	addF := 2000
-	Fpaste := 2000
+	pasteAdd := 300
+	addF := 1800
+	Fpaste := 1800
 	skuArray := []
 	step := 1
 	pasteStart := 0
 	addStart := 0
 	Fstart := 0
 	index := 0
+	linesDone := 0
 	
 	if (!WinExist("BisTrack - New Pullman Store"))
 		keepWinRunning := error(5)
@@ -150,6 +152,7 @@ SetWorkingDir, %A_ScriptDir%
 						if (WinExist("Find Products")) {
 							step := 3
 						} else {
+							linesDone := linesDone + 1
 							step := 4
 						}
 						addStart := 0
@@ -158,6 +161,7 @@ SetWorkingDir, %A_ScriptDir%
 					if (Fstart = 0 && WinExist("Find Products")) {
 						Fstart := A_TickCount
 						ControlClick, SSCommandWndClass1, Find Products,,,, NA
+						linesDone := linesDone + 1
 					}
 					if (A_TickCount - Fstart >= Fpaste) {
 						step := 4
@@ -169,8 +173,15 @@ SetWorkingDir, %A_ScriptDir%
 		step := 1
 	}
 
-	msgbox, Done
+	if (linesDone = 1) {
+		msgbox, Done, %linesDone% product entered.
+	} else if (linesDone >= 0) {
+		msgbox, Done, %linesDone% products entered.
+	} else {
+		msgbox, Invalid number of products entered, gg.
+	}
 
+	showBistrack()
 	keepWinRunning := false
 	Return
 
@@ -216,5 +227,9 @@ gui
 	progress bar
 	show/hide bistrack button
 	running list of bad skus
-
+	settings
+		reverse order
+		skip Find Products
+	start/stop
+	pause/resume
 */
