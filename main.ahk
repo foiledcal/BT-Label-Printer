@@ -109,6 +109,16 @@ SetWorkingDir, %A_ScriptDir%
 		MsgBox, invalid file type
 	}
 
+	revArr := []
+	if (ReversePrintOrder) {
+		Loop, skuArray.MaxIndex()
+		{
+			temp4 := skuArray[A_Index]
+			revArr.Push(%temp4%)
+		}
+		msgbox % revArr[1]
+	}
+
 	;main loop
 	temp := skuArray.MaxIndex()		;dunno how to put maxindex in the loop call directly
 	Loop, %temp%

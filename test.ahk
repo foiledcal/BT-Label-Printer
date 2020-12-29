@@ -39,3 +39,4 @@ SetWorkingDir, %A_ScriptDir%
 ^5::
     ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
     return
+
