@@ -9,7 +9,8 @@ error(stopCode) {
         case 6:     msg := "Something happened to your file."
     }
 	MsgBox % "Error " stopCode ": " msg
-
+    showBistrack()
+    return false
 }
 
 showBistrack() {
