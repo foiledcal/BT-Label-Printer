@@ -2,9 +2,10 @@
 #MaxThreadsPerHotkey 2
 #Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
-#include settings.config
+;#include settings.config
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
+DetectHiddenWindows, On
 
 
 ^1::
@@ -15,6 +16,9 @@ SetWorkingDir, %A_ScriptDir%
 	}
 	keepWinRunning := true
 	;keep this block at the top
+
+	if (!WinExist("BisTrack - New Pullman Store"))
+		keepWinRunning := error(5)
 
 	;timings and declarations
 	pasteAdd := 300
@@ -27,16 +31,16 @@ SetWorkingDir, %A_ScriptDir%
 	Fstart := 0
 	index := 0
 	linesDone := 0
-	
-	if (!WinExist("BisTrack - New Pullman Store"))
-		keepWinRunning := error(5)
-	
+
 	;prompt user file
 	FileSelectFile, inFile, 3
 	if (inFile = "") {
 		keepWinRunning := False
 		return
 	}
+
+	;read config file
+
 
 	;Window: Print Labels Wizard
 		nextbutton := "ThunderRT6CommandButton2"
@@ -109,15 +113,19 @@ SetWorkingDir, %A_ScriptDir%
 		MsgBox, invalid file type
 	}
 
+	/*
+	;flip skuArray if told to
 	revArr := []
 	if (ReversePrintOrder) {
+		temp5 := skuArray.MaxIndex()
 		Loop, skuArray.MaxIndex()
 		{
-			temp4 := skuArray[A_Index]
+			temp4 := skuArray[temp5]
 			revArr.Push(%temp4%)
 		}
 		msgbox % revArr[1]
 	}
+	*/
 
 	;main loop
 	temp := skuArray.MaxIndex()		;dunno how to put maxindex in the loop call directly
@@ -195,7 +203,25 @@ SetWorkingDir, %A_ScriptDir%
 	keepWinRunning := false
 	Return
 
+^2::
+	WinGet, winVisible, Style, BisTrack - New Pullman Store
+    Transform, Result, BitAnd, %winVisible%, 0x10000000
+    if (Result > 0) {
+		msgbox, a
+        hideBistrack()
+    } else {
+		msgbox, b
+        showBistrack()
+    }
+	return
 
+^3::
+	hideBistrack()
+	Return
+
+^4::
+	showBistrack()
+	return
 
 
 

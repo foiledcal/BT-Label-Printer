@@ -1,6 +1,7 @@
 #SingleInstance, Force
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
+#include functions.ahk
 
 ^0::
     ControlGet, exist, Visible,, ThunderRT6CommandButton6, Print Labels Wizard
@@ -40,3 +41,31 @@ SetWorkingDir, %A_ScriptDir%
     ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
     return
 
+^4::
+    WinGet, winVisible, Style, BisTrack - New Pullman Store
+    Transform, Result, BitAnd, %winVisible%, 0x10000000
+    if (Result > 0) {
+        msgbox, visible
+    } else {
+        msgbox, invisible
+    }
+    return
+^3::
+    /*
+    WinHide, BisTrack
+    WinHide, Print Labels Wizard
+    Winhide, New Product Criteria
+    WinHide, Selected Products for Labels
+    */
+    hideBistrack()
+    Return
+
+^2::
+    /*
+    WinShow, BisTrack
+    WinShow, Print Labels Wizard
+    WinShow, New Product Criteria
+    WinShow, Selected Products for Labels
+    */
+    showBistrack()
+    return
