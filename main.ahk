@@ -203,6 +203,7 @@ DetectHiddenWindows, On
 	keepWinRunning := false
 	Return
 
+;toggle bistrack visibility
 ^2::
 	WinGet, winVisible, Style, BisTrack - New Pullman Store
     Transform, Result, BitAnd, %winVisible%, 0x10000000
