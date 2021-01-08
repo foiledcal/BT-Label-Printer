@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
-;#include settings.config
+#include settings.config
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 DetectHiddenWindows, On
@@ -25,6 +25,7 @@ DetectHiddenWindows, On
 	addF := 1800
 	Fpaste := 1800
 	skuArray := []
+	skuArrSize := 0
 	step := 1
 	pasteStart := 0
 	addStart := 0
@@ -99,6 +100,7 @@ DetectHiddenWindows, On
 		Loop, Read, %inFile%
 		{
 			skuArray.Push(A_LoopReadLine)
+			skuArrSize := skuArrSize + 1
 		}
 	} else if (fileExt = "xlsx") {
 		MsgBox, xlsx
@@ -113,23 +115,18 @@ DetectHiddenWindows, On
 		MsgBox, invalid file type
 	}
 
-	/*
 	;flip skuArray if told to
-	revArr := []
 	if (ReversePrintOrder) {
-		temp5 := skuArray.MaxIndex()
-		Loop, skuArray.MaxIndex()
+		Loop % Floor(skuArrSize/2)
 		{
-			temp4 := skuArray[temp5]
-			revArr.Push(%temp4%)
+			temp3 := skuArray[A_Index]
+			skuArray[A_Index] := skuArray[skuArrSize - (A_Index - 1)]
+			skuArray[skuArrSize - (A_Index - 1)] := temp3
 		}
-		msgbox % revArr[1]
 	}
-	*/
 
 	;main loop
-	temp := skuArray.MaxIndex()		;dunno how to put maxindex in the loop call directly
-	Loop, %temp%
+	Loop % skuArray.MaxIndex()
 	{
 		;check if any important windows broke
 		if (!WinExist("BisTrack - New Pullman Store"))
@@ -203,6 +200,7 @@ DetectHiddenWindows, On
 	showBistrack()
 	keepWinRunning := false
 	Return
+
 
 ;toggle bistrack visibility
 ^2::
