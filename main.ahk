@@ -178,6 +178,7 @@ DetectHiddenWindows, On
 				case 3:
 					if (Fstart = 0 && WinExist("Find Products")) {
 						Fstart := A_TickCount
+						;Alt+o, e: turns on exact match, likely gives best result
 						ControlClick, SSCommandWndClass1, Find Products,,,, NA
 						linesDone := linesDone + 1
 					}
@@ -208,10 +209,10 @@ DetectHiddenWindows, On
 	WinGet, winVisible, Style, BisTrack - New Pullman Store
     Transform, Result, BitAnd, %winVisible%, 0x10000000
     if (Result > 0) {
-		msgbox, a
+		;msgbox, a
         hideBistrack()
     } else {
-		msgbox, b
+		;msgbox, b
         showBistrack()
     }
 	return

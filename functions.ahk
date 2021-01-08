@@ -14,15 +14,15 @@ error(stopCode) {
 }
 
 showBistrack() {
-    WinShow, "BisTrack"
-    WinShow, "Print Labels Wizard"
-    WinShow, "New Product Criteria"
-    WinShow, "Selected Products for Labels"
+    WinShow, BisTrack
+    WinShow, Print Labels Wizard
+    WinShow, New Product Criteria
+    WinShow, Selected Products for Labels
 }
 
 hideBistrack() {
-    WinHide, "BisTrack"
-    WinHide, "Print Labels Wizard"
-    Winhide, "New Product Criteria"
-    WinHide, "Selected Products for Labels"
+    WinHide, BisTrack
+    WinHide, Print Labels Wizard
+    Winhide, New Product Criteria
+    WinHide, Selected Products for Labels
 }
