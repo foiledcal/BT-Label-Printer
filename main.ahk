@@ -117,7 +117,7 @@ DetectHiddenWindows, On
 
 	;flip skuArray if told to
 	if (ReversePrintOrder) {
-		Loop % Floor(skuArrSize/2)
+		Loop % Floor(skuArrSize/2)	;floor leaves middle value alone if odd-sized array
 		{
 			temp3 := skuArray[A_Index]
 			skuArray[A_Index] := skuArray[skuArrSize - (A_Index - 1)]
@@ -222,19 +222,12 @@ DetectHiddenWindows, On
 ^4::
 	showBistrack()
 	return
+	
 
 
 
 /*
 
-push through opening prompts
-	check if at end, progress checks backwards through menus
-	delay and winait used
-prompt user file
-	parse filename with "." to take final file extension
-if filetype .txt
-	convert to array through loop file read
-	count number of lines
 if filetype excel, use exceltoarray
 	look for column headers like sku, upc, quantity, etc
 
@@ -258,7 +251,6 @@ option to reverse array order
 
 plans
 limit types of files selectable
-convert loop file read to loop through arrays
 gui
 	progress bar
 	show/hide bistrack button
