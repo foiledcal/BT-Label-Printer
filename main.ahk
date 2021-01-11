@@ -82,7 +82,9 @@ DetectHiddenWindows, On
 		}
 	}
 
-	;hideBistrack()
+	if (HideBisTrackonStart) {
+		hideBistrack()
+	}
 
 	;extract file extension
 	if (FileExist(inFile)) {
@@ -189,6 +191,10 @@ DetectHiddenWindows, On
 		step := 1
 	}
 
+	showBistrack()
+	if (DisplayBisTrackonStop)
+		WinActivate, BisTrack - New Pullman Store
+	
 	if (linesDone = 1) {
 		msgbox, Done, %linesDone% product entered.
 	} else if (linesDone >= 0) {
@@ -197,7 +203,6 @@ DetectHiddenWindows, On
 		msgbox, Invalid number of products entered, gg.
 	}
 
-	showBistrack()
 	keepWinRunning := false
 	Return
 

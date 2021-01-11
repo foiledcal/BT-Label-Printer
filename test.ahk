@@ -51,21 +51,11 @@ SetWorkingDir, %A_ScriptDir%
     }
     return
 ^3::
-    /*
-    WinHide, BisTrack
-    WinHide, Print Labels Wizard
-    Winhide, New Product Criteria
-    WinHide, Selected Products for Labels
-    */
-    hideBistrack()
+    min := 3
+    loop {
+        sleep, 500
+        ;MouseMove, 5, 0, 10, R
+        ;MouseMove, -5, 0, 10, R
+        Send, ^
+    }
     Return
-
-^2::
-    /*
-    WinShow, BisTrack
-    WinShow, Print Labels Wizard
-    WinShow, New Product Criteria
-    WinShow, Selected Products for Labels
-    */
-    showBistrack()
-    return
