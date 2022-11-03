@@ -50,12 +50,3 @@ SetWorkingDir, %A_ScriptDir%
         msgbox, invisible
     }
     return
-^3::
-    min := 3
-    loop {
-        sleep, 500
-        ;MouseMove, 5, 0, 10, R
-        ;MouseMove, -5, 0, 10, R
-        Send, ^
-    }
-    Return

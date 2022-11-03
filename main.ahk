@@ -1,6 +1,6 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
-#Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
+#Include C:\Users\Public\Public Programs\VSCode-win32-x64-1.67.2\Projects\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
 #include settings.config
 SendMode Input
@@ -26,6 +26,7 @@ DetectHiddenWindows, On
 	Fpaste := 1800
 	skuArray := []
 	skuArrSize := 0
+	initState := 3
 	step := 1
 	pasteStart := 0
 	addStart := 0
@@ -35,55 +36,9 @@ DetectHiddenWindows, On
 
 	;prompt user file
 	FileSelectFile, inFile, 3
-	if (inFile = "") {
+	if (inFile = "") {			;if user cancels file selection, exits program
 		keepWinRunning := False
 		return
-	}
-
-	;read config file
-
-
-	;Window: Print Labels Wizard
-		nextbutton := "ThunderRT6CommandButton2"
-		radiobutton := "ThunderRT6OptionButton6"
-		addbutton := "ThunderRT6CommandButton6"
-	;Window: New Product Criteria
-		productsbutton := "SSCommandWndClass1"
-	;window: Selected Products for Labels
-		textfield := "ThunderRT6TextBox1"
-		skuaddbutton := "ThunderRT6CommandButton1"
-
-	;Push through starting windows
-	if (!WinExist("Selected Products for Labels")) {
-		if (WinExist("New Product Criteria")) {
-			ControlClick, %productsbutton%, New Product Criteria,,,, NA
-			sleep, 500
-		} else if (WinExist("Print Labels Wizard")) {
-		    ControlGet, radioVisible, Visible,, ThunderRT6OptionButton6, Print Labels Wizard	
-			if (radioVisible) {
-				ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
-				sleep, 500
-				ControlClick, %addbutton%, Print Labels Wizard,,,, NA
-				WinWait, New Product Criteria
-				sleep, 500
-				ControlClick, %productsbutton%, New Product Criteria,,,, NA
-				sleep, 500
-			} else {
-				ControlClick, %nextbutton%, Print Labels Wizard,,,, NA
-				sleep, 500
-				ControlClick, %radiobutton%, Print Labels Wizard,,,, NA
-				sleep, 500
-				ControlClick, %addbutton%, Print Labels Wizard,,,, NA
-				WinWait, New Product Criteria
-				sleep, 500
-				ControlClick, %productsbutton%, New Product Criteria,,,, NA
-				sleep, 500
-			}
-		}
-	}
-
-	if (HideBisTrackonStart) {
-		hideBistrack()
 	}
 
 	;extract file extension
@@ -95,6 +50,45 @@ DetectHiddenWindows, On
 		}
 	} else {
 		keepWinRunning := keepWinRunning := error(6)
+	}
+
+	;verify filetype
+	if (fileExt != "txt") {
+		error(7)
+	}
+
+	;Push through start screens
+	While (initState < 4) {
+		;Msgbox, 0
+		switch initState {
+			case 1:		;only Print Labels Wizard visible
+				;MsgBox, 1
+				ControlSend,, !n, Print Labels Wizard
+				ControlSend,, !c, Print Labels Wizard
+				ControlSend,, !d, Print Labels Wizard
+				intiState := 2
+			case 2:
+				;msgbox, 2
+				If (!WinExist("New Product Criteria")) {
+					initState := 1
+				} else {
+					ControlSend,, !p, New Product Criteria
+					initState := 3
+				}
+			case 3:
+				;msgbox, 3
+				if (!WinExist("Selected Products for Labels")) {
+					;msgbox, 3.1 
+					initState := 2
+				} else {
+					;msgbox, 3.2
+					initState := 4
+				}
+		}
+	}
+
+	if (HideBisTrackonStart) {
+		hideBistrack()
 	}
 
 	;Convert files to arrays
@@ -114,7 +108,7 @@ DetectHiddenWindows, On
 		MsgBox, csv
 		;make array out of, send to function to extract sku column
 	} else {
-		MsgBox, invalid file type
+		MsgBox, invalid file type		;move up to file selection
 	}
 
 	;flip skuArray if told to
@@ -147,14 +141,16 @@ DetectHiddenWindows, On
 		}
 
 		;while loop for entering each sku
-		index := A_Index	;A_Index doesn't work within nested loops
+		index := A_Index	;A_Index doesn't work within nested loops or something idk
 		while (step < 4) {
 			Switch step {
 				case 1:
 					if (pasteStart = 0) {
 						pasteStart := A_TickCount
 						temp2 := skuArray[index]
-						ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
+						;ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
+						ControlSend,, {Alt down}{q down}{q up}{Alt up}, Selected Products for Labels
+						ControlSend,, %temp2%, Selected Products for Labels
 					}
 					if (A_TickCount - pasteStart >= pasteAdd) {
 						step := 2
@@ -163,7 +159,8 @@ DetectHiddenWindows, On
 				case 2:
 					if (addStart = 0) {
 						addStart := A_TickCount
-						ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
+						;ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
+						ControlSend,, {Alt down}{A down}{A up}{Alt up}, Selected Products for Labels
 					}
 					if (A_TickCount - addStart >= addF) {
 						if (WinExist("Find Products")) {
@@ -178,7 +175,14 @@ DetectHiddenWindows, On
 					if (Fstart = 0 && WinExist("Find Products")) {
 						Fstart := A_TickCount
 						;Alt+o, e: turns on exact match, likely gives best result
-						ControlClick, SSCommandWndClass1, Find Products,,,, NA
+						;ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
+						;ControlSend,, e, Find Products	;turn on exact match
+						;sleep, 200
+						;ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
+						;ControlSend,, n, Find Products	;turn on non-stocked
+						;sleep, 200
+						;ControlClick, SSCommandWndClass1, Find Products,,,, NA
+						ControlSend,, {F12}, Find Products
 						linesDone := linesDone + 1
 					}
 					if (A_TickCount - Fstart >= Fpaste) {

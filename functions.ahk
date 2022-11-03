@@ -6,7 +6,8 @@ error(stopCode) {
 		case 3: 	msg := "'New Prodcut Criteria' closed unexpectedly."
 		case 4: 	msg := "'Selected Products for Labels' closed unexpectedly."
         case 5:     msg := "BisTrack needs to be open and the Print Labels Wizard started."
-        case 6:     msg := "Something happened to your file."
+        case 6:     msg := "File not found."
+        case 7:     msg := "Invalid file type."
     }
 	MsgBox % "Error " stopCode ": " msg
     showBistrack()
