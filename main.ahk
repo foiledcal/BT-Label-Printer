@@ -21,13 +21,17 @@ DetectHiddenWindows, On
 		keepWinRunning := error(5)
 
 	;timings and declarations
+
+
 	pasteAdd := 300
 	addF := 1800
 	Fpaste := 1800
+
 	skuArray := []
 	skuArrSize := 0
 	initState := 3
 	step := 1
+
 	pasteStart := 0
 	addStart := 0
 	Fstart := 0
@@ -35,7 +39,7 @@ DetectHiddenWindows, On
 	linesDone := 0
 
 	;prompt user file
-	FileSelectFile, inFile, 3
+    FileSelectFile, inFile, 3
 	if (inFile = "") {			;if user cancels file selection, exits program
 		keepWinRunning := False
 		return
@@ -50,45 +54,6 @@ DetectHiddenWindows, On
 		}
 	} else {
 		keepWinRunning := keepWinRunning := error(6)
-	}
-
-	;verify filetype
-	if (fileExt != "txt") {
-		error(7)
-	}
-
-	;Push through start screens
-	While (initState < 4) {
-		;Msgbox, 0
-		switch initState {
-			case 1:		;only Print Labels Wizard visible
-				;MsgBox, 1
-				ControlSend,, !n, Print Labels Wizard
-				ControlSend,, !c, Print Labels Wizard
-				ControlSend,, !d, Print Labels Wizard
-				intiState := 2
-			case 2:
-				;msgbox, 2
-				If (!WinExist("New Product Criteria")) {
-					initState := 1
-				} else {
-					ControlSend,, !p, New Product Criteria
-					initState := 3
-				}
-			case 3:
-				;msgbox, 3
-				if (!WinExist("Selected Products for Labels")) {
-					;msgbox, 3.1 
-					initState := 2
-				} else {
-					;msgbox, 3.2
-					initState := 4
-				}
-		}
-	}
-
-	if (HideBisTrackonStart) {
-		hideBistrack()
 	}
 
 	;Convert files to arrays
@@ -108,7 +73,59 @@ DetectHiddenWindows, On
 		MsgBox, csv
 		;make array out of, send to function to extract sku column
 	} else {
-		MsgBox, invalid file type		;move up to file selection
+		MsgBox, Invalid file type
+
+	}
+	
+	;Push through start screens
+	While (initState < 6) {
+
+		;check if script needs to stop
+		if (!keepWinRunning) {
+			msgbox, Loop stopped
+			return
+		}
+
+		switch initState {
+			case 1:		;only Print Labels Wizard visible
+				ControlSend,, !n, Print Labels Wizard
+				ControlSend,, !c, Print Labels Wizard
+				ControlSend,, !d, Print Labels Wizard
+				intiState := 2
+			case 2:
+				if (!WinExist("New Product Criteria")) {
+					initState := 2
+				} else {
+					initState := 3
+				}
+			case 3:
+				;msgbox, 2
+				If (!WinExist("New Product Criteria")) {
+					initState := 1
+				} else {
+					ControlSend,, !p, New Product Criteria
+					initState := 4
+				}
+			case 4:
+				if (!WinExist("Selected Products for Labels")) {
+					initState := 4
+				} else {
+					initState := 5
+				}
+			case 5:
+				;msgbox, 3
+				if (!WinExist("Selected Products for Labels")) {
+					;msgbox, 3.1 
+					initState := 3
+				} else {
+					;msgbox, 3.2
+					initState := 6
+				}
+		}
+	}
+
+	if (HideBisTrackonStart) {
+		hideBistrack()
 	}
 
 	;flip skuArray if told to
@@ -124,25 +141,26 @@ DetectHiddenWindows, On
 	;main loop
 	Loop % skuArray.MaxIndex()
 	{
-		;check if any important windows broke
-		if (!WinExist("BisTrack - New Pullman Store"))
-			keepWinRunning := error(1)
-		if (!WinExist("Print Labels Wizard"))
-			keepWinRunning := error(2)
-		if (!WinExist("New Product Criteria"))
-			keepWinRunning := error(3)
-		if (!WinExist("Selected Products for Labels"))
-			keepWinRunning := error(4)
-
-		;check if script needs to stop
-		if (!keepWinRunning) {
-			msgbox, Loop stopped
-			return
-		}
-
 		;while loop for entering each sku
 		index := A_Index	;A_Index doesn't work within nested loops or something idk
 		while (step < 4) {
+
+			;check if any important windows broke
+			if (!WinExist("BisTrack - New Pullman Store"))
+				keepWinRunning := error(1)
+			if (!WinExist("Print Labels Wizard"))
+				keepWinRunning := error(2)
+			if (!WinExist("New Product Criteria"))
+				keepWinRunning := error(3)
+			if (!WinExist("Selected Products for Labels"))
+				keepWinRunning := error(4)
+
+			;check if script needs to stop
+			if (!keepWinRunning) {
+				msgbox, Loop stopped
+				return
+			}
+
 			Switch step {
 				case 1:
 					if (pasteStart = 0) {
@@ -241,19 +259,6 @@ if filetype excel, use exceltoarray
 	look for column headers like sku, upc, quantity, etc
 
 ;hideBistrack()
-
-loop to progress through sku entering windows
-	check for:
-	switch case for stepping through windows
-	if !keepwinrunning {
-		showBistrack()
-		return
-	}
-	if any bistrack window closed unexpectedly
-		
-showBistrack()
-
-functions
 
 in return file of bad skus, instead duplicate user's file with bad skus marked
 option to reverse array order
