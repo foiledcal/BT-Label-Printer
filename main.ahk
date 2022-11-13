@@ -20,12 +20,15 @@ DetectHiddenWindows, On
 	if (!WinExist("BisTrack - New Pullman Store"))
 		keepWinRunning := error(5)
 
+	
 	;timings and declarations
-
-
 	pasteAdd := 300
 	addF := 1800
 	Fpaste := 1800
+	altOneWait := 2000
+	nWait := 2000
+	altTwoWait := 2000
+	eWait := 2000
 
 	skuArray := []
 	skuArrSize := 0
@@ -34,7 +37,13 @@ DetectHiddenWindows, On
 
 	pasteStart := 0
 	addStart := 0
+	altOneStart := 0
+	nStart := 0
+	altTwoStart := 0
+	eStart := 0
 	Fstart := 0
+
+	exactMatchOn := 0
 	index := 0
 	linesDone := 0
 
@@ -143,7 +152,7 @@ DetectHiddenWindows, On
 	{
 		;while loop for entering each sku
 		index := A_Index	;A_Index doesn't work within nested loops or something idk
-		while (step < 4) {
+		while (step < 8) {
 
 			;check if any important windows broke
 			if (!WinExist("BisTrack - New Pullman Store"))
@@ -166,7 +175,6 @@ DetectHiddenWindows, On
 					if (pasteStart = 0) {
 						pasteStart := A_TickCount
 						temp2 := skuArray[index]
-						;ControlSetText, ThunderRT6TextBox1, %temp2%, Selected Products for Labels
 						ControlSend,, {Alt down}{q down}{q up}{Alt up}, Selected Products for Labels
 						ControlSend,, %temp2%, Selected Products for Labels
 					}
@@ -177,34 +185,72 @@ DetectHiddenWindows, On
 				case 2:
 					if (addStart = 0) {
 						addStart := A_TickCount
-						;ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
 						ControlSend,, {Alt down}{A down}{A up}{Alt up}, Selected Products for Labels
+					}
+					if (WinExist("Find Products")) {
+						step := 3
+						addStart := 0
 					}
 					if (A_TickCount - addStart >= addF) {
 						if (WinExist("Find Products")) {
 							step := 3
 						} else {
 							linesDone := linesDone + 1
-							step := 4
+							step := 8	;exit step
 						}
 						addStart := 0
 					}
 				case 3:
-					if (Fstart = 0 && WinExist("Find Products")) {
-						Fstart := A_TickCount
+					if (altOneStart = 0 && WinExist("Find Products")) {
+						altOneStart := A_TickCount
 						;Alt+o, e: turns on exact match, likely gives best result
-						;ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
-						;ControlSend,, e, Find Products	;turn on exact match
-						;sleep, 200
-						;ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
-						;ControlSend,, n, Find Products	;turn on non-stocked
-						;sleep, 200
-						;ControlClick, SSCommandWndClass1, Find Products,,,, NA
+						ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
+					}
+					if (A_TickCount - altOneStart >= altOneWait) {
+						step := 4
+						altOneStart := 0
+					}
+				case 4:
+					if (nStart = 0) {
+						nStart := A_TickCount
+						ControlSend,, n, Find Products
+					}
+					if (A_TickCount - nStart >= nWait) {
+						if (!exactMatchOn) {
+							step := 5
+							nStart := 0
+						} else {
+							step := 7
+							nStart := 0
+						}
+					}
+				case 5:
+					if (altTwoStart = 0) {
+						altTwoStart := A_TickCount
+						ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
+					}
+					if (A_TickCount - altTwoStart >= altTwoWait) {
+						step := 6
+						altTwoStart := 0
+					}
+				case 6:
+					if (eStart = 0) {
+						eStart := A_TickCount
+						ControlSend,, e, Find Products
+						exactMatchOn := 1
+					}
+					if (A_TickCount - eStart >= eWait) {
+						step := 7
+						eStart := 0
+					}
+				case 7:
+					if (Fstart = 0) {
+						Fstart := A_TickCount
 						ControlSend,, {F12}, Find Products
 						linesDone := linesDone + 1
 					}
 					if (A_TickCount - Fstart >= Fpaste) {
-						step := 4
+						step := 8	;exit step
 						Fstart := 0
 					}
 			}
