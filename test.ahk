@@ -34,7 +34,7 @@ SetWorkingDir, %A_ScriptDir%
     Return
 
 ^6::
-    ControlSetText, ThunderRT6TextBox1, test, Selected Products for Labels
+    ControlSend,, {F12}, Find Products
     return
 
 ^5::

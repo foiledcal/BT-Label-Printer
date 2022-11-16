@@ -28,11 +28,11 @@ DetectHiddenWindows, On
 	altOneWait := 2000
 	nWait := 2000
 	altTwoWait := 2000
-	eWait := 2000
+	eWait := 4000
 
 	skuArray := []
 	skuArrSize := 0
-	initState := 3
+	initState := 5
 	step := 1
 
 	pasteStart := 0
@@ -194,14 +194,16 @@ DetectHiddenWindows, On
 					if (A_TickCount - addStart >= addF) {
 						if (WinExist("Find Products")) {
 							step := 3
+							addStart := 0
+
 						} else {
 							linesDone := linesDone + 1
 							step := 8	;exit step
+							addStart := 0
 						}
-						addStart := 0
 					}
 				case 3:
-					if (altOneStart = 0 && WinExist("Find Products")) {
+					if (altOneStart = 0) {
 						altOneStart := A_TickCount
 						;Alt+o, e: turns on exact match, likely gives best result
 						ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
@@ -246,7 +248,9 @@ DetectHiddenWindows, On
 				case 7:
 					if (Fstart = 0) {
 						Fstart := A_TickCount
-						ControlSend,, {F12}, Find Products
+						WinActivate, Find Products
+						;ControlSend,, {F12}, Find Products
+						SendInput, {F12}
 						linesDone := linesDone + 1
 					}
 					if (A_TickCount - Fstart >= Fpaste) {
