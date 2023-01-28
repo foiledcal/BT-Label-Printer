@@ -27,3 +27,12 @@ hideBistrack() {
     Winhide, New Product Criteria
     WinHide, Selected Products for Labels
 }
+
+parseArray(inArray) {
+
+}
+
+;find length of top row array
+;loop through each cell for duration of top row length
+;attempt to match each cell to key words for sku
+;attempt to match each cell to key words for qty
