@@ -1,6 +1,6 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
-#Include C:\Users\Public\Public Programs\VSCode-win32-x64-1.67.2\Projects\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
+#Include .\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
 #include settings.config
 SendMode Input
