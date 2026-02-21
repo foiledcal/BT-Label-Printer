@@ -101,6 +101,7 @@ DetectHiddenWindows, On
 				ControlSend,, !c, Print Labels Wizard
 				ControlSend,, !d, Print Labels Wizard
 				intiState := 2
+				msgbox, initState
 			case 2:
 				if (!WinExist("New Product Criteria (Remote)")) {
 					initState := 2
