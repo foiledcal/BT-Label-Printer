@@ -17,7 +17,7 @@ DetectHiddenWindows, On
 	keepWinRunning := true
 	;keep this block at the top
 
-	if (!WinExist("BisTrack - New Pullman Store"))
+	if (!WinExist("BisTrack - Moscow"))
 		keepWinRunning := error(5)
 
 	
@@ -155,7 +155,7 @@ DetectHiddenWindows, On
 		while (step < 8) {
 
 			;check if any important windows broke
-			if (!WinExist("BisTrack - New Pullman Store"))
+			if (!WinExist("BisTrack - Moscow (Remote)"))
 				keepWinRunning := error(1)
 			if (!WinExist("Print Labels Wizard"))
 				keepWinRunning := error(2)
@@ -215,6 +215,7 @@ DetectHiddenWindows, On
 				case 4:
 					if (nStart = 0) {
 						nStart := A_TickCount
+						;
 						ControlSend,, n, Find Products
 					}
 					if (A_TickCount - nStart >= nWait) {
@@ -265,7 +266,7 @@ DetectHiddenWindows, On
 
 	showBistrack()
 	if (DisplayBisTrackonStop)
-		WinActivate, BisTrack - New Pullman Store
+		WinActivate, BisTrack - Moscow (Remote)
 	
 	if (linesDone = 1) {
 		msgbox, Done, %linesDone% product entered.
@@ -281,7 +282,7 @@ DetectHiddenWindows, On
 
 ;toggle bistrack visibility
 ^2::
-	WinGet, winVisible, Style, BisTrack - New Pullman Store
+	WinGet, winVisible, Style, BisTrack - Moscow (Remote)
     Transform, Result, BitAnd, %winVisible%, 0x10000000
     if (Result > 0) {
 		;msgbox, a
