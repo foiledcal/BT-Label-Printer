@@ -1,6 +1,6 @@
 #NoEnv
 #MaxThreadsPerHotkey 2
-#Include P:\Float\GitHub\BT-Label-Printer\ExcelToArray-master\ExcelToArray.ahk
+#Include .\ExcelToArray-master\ExcelToArray.ahk
 #Include functions.ahk
 SendMode Input
 SetWorkingDir, %A_ScriptDir%

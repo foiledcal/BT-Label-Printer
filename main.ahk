@@ -102,28 +102,28 @@ DetectHiddenWindows, On
 				ControlSend,, !d, Print Labels Wizard
 				intiState := 2
 			case 2:
-				if (!WinExist("New Product Criteria")) {
+				if (!WinExist("New Product Criteria (Remote)")) {
 					initState := 2
 				} else {
 					initState := 3
 				}
 			case 3:
 				;msgbox, 2
-				If (!WinExist("New Product Criteria")) {
+				If (!WinExist("New Product Criteria (Remote)")) {
 					initState := 1
 				} else {
 					ControlSend,, !p, New Product Criteria
 					initState := 4
 				}
 			case 4:
-				if (!WinExist("Selected Products for Labels")) {
+				if (!WinExist("Selected Products for Labels (Remote)")) {
 					initState := 4
 				} else {
 					initState := 5
 				}
 			case 5:
 				;msgbox, 3
-				if (!WinExist("Selected Products for Labels")) {
+				if (!WinExist("Selected Products for Labels (Remote)")) {
 					;msgbox, 3.1 
 					initState := 3
 				} else {
@@ -157,11 +157,11 @@ DetectHiddenWindows, On
 			;check if any important windows broke
 			if (!WinExist("BisTrack - Moscow (Remote)"))
 				keepWinRunning := error(1)
-			if (!WinExist("Print Labels Wizard"))
+			if (!WinExist("Print Labels Wizard (Remote)"))
 				keepWinRunning := error(2)
-			if (!WinExist("New Product Criteria"))
+			if (!WinExist("New Product Criteria (Remote)"))
 				keepWinRunning := error(3)
-			if (!WinExist("Selected Products for Labels"))
+			if (!WinExist("Selected Products for Labels (Remote)"))
 				keepWinRunning := error(4)
 
 			;check if script needs to stop
