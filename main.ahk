@@ -114,7 +114,7 @@ DetectHiddenWindows, On
 				If (!WinExist("New Product Criteria (Remote)")) {
 					initState := 1
 				} else {
-					ControlSend,, !p, New Product Criteria
+					ControlSend,, !p, "New Product Criteria (Remote)"
 					initState := 4
 				}
 			case 4:
