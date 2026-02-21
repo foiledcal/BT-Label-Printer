@@ -34,7 +34,7 @@ SetWorkingDir, %A_ScriptDir%
     Return
 
 ^6::
-    ControlSend,, !p, New Product Criteria
+    ControlSend,, {alt down}{p down}{p up}{alt up}, New Product Criteria
     return
 
 ^5::
