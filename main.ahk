@@ -107,6 +107,7 @@ DetectHiddenWindows, On
 				} else {
 					initState := 3
 				}
+				msgbox, initState
 			case 3:
 				;msgbox, 2
 				If (!WinExist("New Product Criteria (Remote)")) {
