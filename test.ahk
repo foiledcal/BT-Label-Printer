@@ -34,7 +34,7 @@ SetWorkingDir, %A_ScriptDir%
     Return
 
 ^6::
-    ControlSend,, {F12}, Find Products
+    ControlSend,, !p, New Product Criteria
     return
 
 ^5::
