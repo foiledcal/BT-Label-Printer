@@ -43,7 +43,7 @@ DetectHiddenWindows, On
 	eStart := 0
 	Fstart := 0
 
-	exactMatchOn := 0
+	exactMatchOn := 1
 	index := 0
 	linesDone := 0
 
@@ -114,7 +114,7 @@ DetectHiddenWindows, On
 				If (!WinExist("New Product Criteria (Remote)")) {
 					initState := 1
 				} else {
-					ControlSend,, {alt down}{p down}{p up}{alt up}, "New Product Criteria (Remote)"
+					ControlSend,, {alt down}{p down}{p up}{alt up}, New Product Criteria
 					initState := 4
 				}
 			case 4:
@@ -207,7 +207,7 @@ DetectHiddenWindows, On
 				case 3:
 					if (altOneStart = 0) {
 						altOneStart := A_TickCount
-						;Alt+o, e: turns on exact match, likely gives best result
+						;Alt+o, n: enables "Include Non Stocked," needs reapplying each time
 						ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
 					}
 					if (A_TickCount - altOneStart >= altOneWait) {
@@ -232,7 +232,8 @@ DetectHiddenWindows, On
 				case 5:
 					if (altTwoStart = 0) {
 						altTwoStart := A_TickCount
-						ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
+						ControlSend,, !o, Find Products
+						;ControlSend,, {Alt down}{o down}{o up}{alt up}, Find Products
 					}
 					if (A_TickCount - altTwoStart >= altTwoWait) {
 						step := 6
@@ -251,9 +252,9 @@ DetectHiddenWindows, On
 				case 7:
 					if (Fstart = 0) {
 						Fstart := A_TickCount
-						WinActivate, Find Products
-						;ControlSend,, {F12}, Find Products
-						SendInput, {F12}
+						;WinActivate, Find Products
+						ControlSend,, {F12}, Find Products
+						;SendInput, {F12}
 						linesDone := linesDone + 1
 					}
 					if (A_TickCount - Fstart >= Fpaste) {
