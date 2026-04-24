@@ -41,6 +41,7 @@ SetWorkingDir, %A_ScriptDir%
     if FileExist(updates.txt) {
         msgbox, true
     }
+    return
 
 ^4::
     WinGet, winVisible, Style, BisTrack - New Pullman Store
