@@ -190,6 +190,9 @@ DetectHiddenWindows, On
 						ControlSend,, {Alt down}{A down}{A up}{Alt up}, Selected Products for Labels
 					}
 					if (WinExist("Find Products")) {
+						if !FileExist(\inFile - Problem SKUs.txt) {
+							
+						}
 						step := 3
 						addStart := 0
 					}
