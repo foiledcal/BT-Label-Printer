@@ -35,7 +35,7 @@ SetWorkingDir, %A_ScriptDir%
 
 ^6::
     ControlSend,, {alt down}{p down}{p up}{alt up}, New Product Criteria
-    return
+    return 
 
 ^5::
     if FileExist(updates.txt) {
