@@ -190,9 +190,22 @@ DetectHiddenWindows, On
 						ControlSend,, {Alt down}{A down}{A up}{Alt up}, Selected Products for Labels
 					}
 					if (WinExist("Find Products")) {
-						if !FileExist(\inFile - Problem SKUs.txt) {
-							
+						;Record Problem SKU stuff
+						;Extract name of user input file
+						lastSlash := InStr(inFile, "\", 0, -1)
+						lastDot := InStr(inFile, ".", 0, -1)
+						inFileName := SubStr(inFile, lastSlash+1, (lastDot - lastSlash-1))
+
+						;Check if a file for problem SKUs has already been made
+						problemSKUFile := inFileName " - Problem SKUs.txt"
+						if !FileExist(problemSKUFile) {
+							FileAppend,, %problemSKUFile%
+							FileObj := FileOpen(problemSKUFile, "w")
 						}
+
+						;append problem SKU
+						FileObj.Write("Line " index ": " skuArray[index] "`r`n")
+
 						step := 3
 						addStart := 0
 					}
@@ -282,6 +295,7 @@ DetectHiddenWindows, On
 		msgbox, Invalid number of products entered, gg.
 	}
 
+	FileObj.Close()
 	keepWinRunning := false
 	Return
 
