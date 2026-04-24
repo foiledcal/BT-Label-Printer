@@ -38,8 +38,9 @@ SetWorkingDir, %A_ScriptDir%
     return
 
 ^5::
-    ControlClick, ThunderRT6CommandButton1, Selected Products for Labels,,,, NA
-    return
+    if FileExist(updates.txt) {
+        msgbox, true
+    }
 
 ^4::
     WinGet, winVisible, Style, BisTrack - New Pullman Store
